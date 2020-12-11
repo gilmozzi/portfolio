@@ -1,0 +1,768 @@
+/* apply a natural box layout model to all elements */
+html {
+  box-sizing: border-box;
+}
+
+body {
+  color: white;
+  background: #181818;
+  position: relative;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:root {
+  --red: #d30303;
+}
+
+/* 
+  Note - RWD = responsive web design => flexbox, media queries, max-width and other techniques
+  1. BACKGROUNDS: Add multiple backgrounds to get the effect shown
+  2. TYPOGRAPHY: 
+      - Google Font used for headlines/titles is 'Bungee Inline' -  https://fonts.google.com/specimen/Bungee
+      - Font stack used for the remaining text elements is 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+      - Red titles have a bit of a text shadow in my example
+  3.  NAVIGATION: 
+      - The menu should sit above all other content, scroll to make sure it does
+      - The menu should be fixed to the top of the screen
+      - Logo in the example is about 120px tall
+      - RWD: In narrow views (< ~620px) the logo will be centered at the top, and the menu items arranged underneath
+  4. CONTENT:
+      - Demo has two ARTICLES, one with specials, one with menu items
+      - Content shouldn't stretch the entire width of the page, but be limited (demo is maximum width of 1020px)
+      - Video should be embedded responsively - set width to 450px base but it can be wider in narrow/medium views
+      - https://embedresponsively.com/
+      - https://www.youtube.com/watch?v=7o3c2mslO-o
+*/
+
+ul {
+  margin: 0;
+}
+
+/*
+  Typography
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Ubuntu&display=swap');  
+/*font-family: 'Ubuntu', sans-serif;*/
+
+h1, h2, h3, h4 {
+  font-family: 'Raleway', sans-serif; 
+}
+
+p {
+  font-family: 'Ubuntu', sans-serif;
+}
+
+
+
+/*
+  Navigation
+*/
+
+.navbar-area {
+  margin: 0 auto;
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+  background-color: #00000000;
+  height: 70px;
+  position: sticky;
+  top: 0;
+  display: flex;
+  z-index: 3;
+}
+
+.site-navbar {
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+a.site-logo img {
+  max-width: 50px;
+}
+
+.site-navbar ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.site-navbar ul li a {
+  color: #fff;
+  padding: 20px;
+  display: block;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.site-navbar ul li a:hover {
+  background: rgba(255,255,255,.1);
+}
+/* navbar regular css end */
+
+
+/* nav-toggler css start */
+.nav-toggler {
+  border-color: rgba(0, 0, 0, 0);
+  padding: 5px;
+  background-color: transparent;
+  cursor: pointer;
+  height: 39px;
+  display: none;
+}
+.nav-toggler span, 
+.nav-toggler span:before, 
+.nav-toggler span:after {
+  width: 28px;
+  height: 3px;
+  background-color: #fff;
+  display: block;
+  transition: .3s;
+}
+.nav-toggler span:before {
+  content: '';
+  transform: translateY(-9px);
+}
+.nav-toggler span:after {
+  content: '';
+  transform: translateY(6px);
+}
+.nav-toggler.toggler-open span {
+  background-color: transparent;
+}
+.nav-toggler.toggler-open span:before {
+  transform: translateY(0px) rotate(45deg);
+}
+.nav-toggler.toggler-open span:after {
+  transform: translateY(-3px) rotate(-45deg);
+}
+/* nav-toggler css start */
+
+
+/* mobile breakpoint start */
+@media (min-width: 700px) and (max-width: 1050px) {
+
+  /* navbar css for mobile start */
+
+  .nav-toggler{
+    display: block;
+  }
+  .site-navbar {
+    width: 90%;
+    min-height: 60px;
+  }
+  .site-navbar ul {
+    position: absolute;
+    width: 100%;
+    height: calc(100vh - 60px);
+    left: 0;
+    top: 60px;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(0,0,0,.75);
+    max-height: 0;
+    overflow: hidden;
+    transition: .3s;
+  }
+  .site-navbar ul li {
+    width: 100%;
+    text-align: center;
+  }
+  .site-navbar ul li a {
+    padding: 25px;
+  }
+  .site-navbar ul li a:hover {
+    background-color: rgba(255,255,255,.1);
+  }
+  .site-navbar ul.open {
+    max-height: 100vh;
+    overflow: visible;
+  }
+  .intro-area h2 {
+    font-size: 36px;
+    margin-bottom: 15px;
+  }  
+  /* navbar css for mobile end */
+}
+/* mobile breakpoint end */
+
+@media screen and (max-width: 700px) {
+
+  /* navbar css for mobile start */
+
+  .navbar-area {
+    margin: 0 auto;
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+    background-color: #00000000;
+    max-height: 50px;
+    position: sticky;
+    top: 0;
+    display: flex;
+    z-index: 3;
+  }
+  
+  a.site-logo img {
+    max-width: 40px;
+  }
+  
+  .site-navbar ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+  }
+
+  .nav-toggler {
+    display: block;
+  }
+
+  .site-navbar {
+    width: 90%;
+  }
+
+  .site-navbar ul {
+    position: absolute;
+    width: 100%;
+    height: calc(100vh - 60px);
+    left: 0;
+    top: 60px;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(0,0,0,.75);
+    max-height: 0;
+    overflow: hidden;
+    transition: .3s;
+  }
+  .site-navbar ul li {
+    width: 100%;
+    text-align: center;
+  }
+  .site-navbar ul li a {
+    padding: 25px;
+  }
+  .site-navbar ul li a:hover {
+    background-color: rgba(255,255,255,.1);
+  }
+  .site-navbar ul.open {
+    max-height: 100vh;
+    overflow: visible;
+  }
+  .intro-area h2 {
+    font-size: 36px;
+    margin-bottom: 15px;
+  }  
+  /* navbar css for mobile end */
+}
+
+
+/*
+  Banner
+*/
+
+.banner-container {
+background-image: url('banner2.gif');
+background-attachment: fixed;
+background-position: top;
+background-repeat: no-repeat;
+margin: -100px 0 0 0;
+max-width: 1980px;
+min-height: 1000px;
+display: flex;
+overflow: hidden;
+
+}
+
+
+/* 
+  Content
+*/
+
+.content-container {
+  max-width: 100%;
+  min-height: 100vh;
+  margin: 75px auto 0;
+  overflow: hidden;
+}
+
+.content-header {
+  width: 65%;
+  margin: 5vh auto;
+  align-items: center;
+  text-align: center;
+  font-weight: 700;
+  color: #B5B5B5;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 65%;
+  opacity: 0.7;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+
+.content-item {
+  display: flex;
+  flex-direction: row;
+  border-radius: 0 0 10px 10px;
+  bottom: 0;
+  margin: 0 auto;
+  padding: 30px 85px;
+  width: 250px;
+  background-color: #353535;
+}
+
+.link-tag {
+  position: absolute; 
+  width: 250px; 
+  height: 500px;
+}
+
+.content-card-1 {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  margin: 0 10px 0 0;
+  opacity: 0.7;
+  background-image: url('physical.jpg');
+  background-size: cover;
+  max-width: 300px;
+  height: 500px;
+  font-weight: bold;
+  border-radius: 10px;
+  text-align: center;
+  transition: 1s;
+  box-shadow: 0px 0px 50px rgb(0, 0, 0);
+
+}
+
+.content-card-2 {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  margin: 0 10px 0 0;
+  opacity: 0.7;
+  background-image: url('digital.png');
+  background-size: cover;
+  max-width: 300px;
+  height: 500px;
+  font-weight: bold;
+  border-radius: 10px;
+  text-align: center;
+  transition: 1s;
+  box-shadow: 0px 0px 50px rgb(0, 0, 0);
+}
+
+.content-card-3 {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  margin: 0 10px 0 0;
+  opacity: 0.7;
+  background-image: url('project.png');
+  background-size: cover;
+  max-width: 300px;
+  height: 500px;
+  font-weight: bold;
+  border-radius: 10px;
+  text-align: center;
+  transition: 1s;
+  box-shadow: 0px 0px 50px rgb(0, 0, 0);
+}
+
+.content-card-4 {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  margin: 0;
+  opacity: 0.7;
+  background-image: url('internship.png');
+  background-size: cover;
+  max-width: 300px;
+  height: 500px;
+  font-weight: bold;
+  border-radius: 10px;
+  text-align: center;
+  transition: 1s;
+  box-shadow: 0px 0px 50px rgb(0, 0, 0);
+}
+
+
+.content-card-1:hover{
+  transform: scale(1.04);
+  opacity: 1;
+  z-index: 2;
+  box-shadow: 0px 0px 30px rgb(0, 0, 0);
+}
+
+.content-card-2:hover{
+  transform: scale(1.04);
+  opacity: 1;
+  z-index: 2;
+  box-shadow: 0px 0px 30px rgb(0, 0, 0);
+}
+
+.content-card-3:hover{
+  transform: scale(1.04);
+  opacity: 1;
+  z-index: 2;
+  box-shadow: 0px 0px 30px rgb(0, 0, 0);
+}
+
+.content-card-4:hover{
+  transform: scale(1.04);
+  opacity: 1;
+  z-index: 2;
+  box-shadow: 0px 0px 30px rgb(0, 0, 0);
+}
+
+
+/*Second container of the main page*/
+
+.charles-container {
+  background-color: #353535;
+  margin: -50px auto;
+  padding: 125px 0;
+}
+
+.charles-title {
+  margin: 0 auto;
+}
+
+.charles {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.charles-content {
+  margin-left: 20px;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.charles-content h3 {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.charles-content h4 {
+  font-weight: 100;
+  font-style: italic;
+  font-size: 1.3rem;
+  margin: 0 auto;
+}
+
+
+.charles-logo {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0 auto;
+  float: right;
+}
+
+.charles-logo img{
+  max-width: 60%;
+}
+
+
+/* 
+  Footer
+*/
+
+.footer-container {
+  background-color: #252525;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+  box-sizing: border-box;
+  width: 100%;
+  text-align: left;
+  font: normal 16px sans-serif;
+  padding: 100px;
+}
+
+.footer-left {
+  margin: 0 auto;
+  width: 60%;
+}
+
+.footer-container .footer-left p {
+  color: #8f9296;
+  font-size: 14px;
+  margin: 0;
+}
+
+.footer-container p {
+  margin: 0 0 10px;
+  padding: 0;
+  transition: ease .25s;
+  float: left;
+}
+
+.footer-right {
+  width: 80%;
+}
+
+.footer-right a {
+  float: right;
+  width: 35px;
+  height: 35px;
+  border-radius: 2px;
+  font-size: 20px;
+  color: #acacac;
+  line-height: 35px;
+  margin-left: 3px;
+  transition:all .25s;
+}
+
+
+/* Mobile for content */
+
+@media screen and (max-width: 600px) {
+
+  .banner-container {
+    background-position: 0 50px; 
+    min-height: 400px;
+    background-size: contain;
+  }
+
+  .link-tag {
+    position: absolute; 
+    width: 300px; 
+    height: 300px;
+  }
+
+  .content-header {
+    width: 100%;
+    align-items: center;
+    font-size: 1.3rem;
+  }
+
+  .content-container {
+    margin: -20px auto;
+    width: 100%;
+  }
+
+  .content-wrapper {
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 100px;
+  }
+
+  .content-card-1,
+  .content-card-2,
+  .content-card-3,
+  .content-card-4 {
+    opacity: 1;
+    width: 100%;
+    height: 300px;
+    margin-bottom: 20px;
+  }
+  
+  .content-item {
+    padding: 10px 30px;
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .charles {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .charles :nth-child(1) { order: 2; }
+  .charles :nth-child(2) { order: 1; }
+
+
+  .charles {
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .charles-content {
+    margin: 0;
+    max-width: 200px;
+  }
+
+  .charles-content h1 {
+    font-size: 1.2rem;
+  }
+
+  .charles-content h4 {
+    font-weight: 100;
+    font-style: italic;
+    font-size: 1.3rem;
+    margin: 0 auto;
+  }
+
+  .charles-logo {
+    width: 300px;
+    flex-wrap: nowrap;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 50px;
+  }
+
+  .charles-logo img {
+    width: 100%;
+  }
+
+  .footer-container {
+    padding: 10%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .footer-container :nth-child(1) { order: 2; }
+  .footer-container :nth-child(2) { order: 1; }
+    
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    min-width: 200px;
+  }
+
+  .footer-left p {
+    line-height: 1.6;
+    text-align: center;
+    justify-content: center;
+    margin: 0 auto;
+  }
+
+  .footer-right {
+    margin: 50px auto 0;
+    display: flex;
+    width: 70%;
+  }
+
+  .footer-right a {
+    margin: 0 auto;
+    text-align: center;
+  }
+}
+
+
+
+@media (min-width: 600px) and (max-width: 1050px) {
+  
+  .banner-container {
+    background-position: 0 75px; 
+    min-height: 500px;
+    background-size: contain;
+  }
+
+  .link-tag {
+    position: absolute; 
+    width: 300px; 
+    height: 300px;
+  }
+
+  .content-header{
+    width: 100%;
+    align-items: center;
+    font-size: 1.3rem;
+  }
+
+  .content-container {
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .content-wrapper {
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0 auto 100px;
+  }
+
+  .content-card-1,
+  .content-card-2,
+  .content-card-3,
+  .content-card-4 {
+    opacity: 1;
+    min-width: 350px;
+    height: 300px;
+    margin-bottom: 20px;
+  }
+  
+  .content-item {
+    padding: 10px 30px;
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .charles {
+    margin: 0 auto;
+    width: 600px;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .charles-content {
+    padding-right: 20px;
+    max-width: 300px;
+    justify-content: right;
+    margin: 0 0 0 20px;
+  }
+
+  .charles-content h1 {
+    font-size: 1.5rem;
+  }
+
+  .charles-logo {
+    margin: 0;
+    max-width: 300px;
+    height: 300px;
+  }
+
+  .charles-logo img {
+    min-width: 300px;
+  }
+  
+  .footer-left {
+    margin: 0 auto;
+    min-width: 95%;
+  }
+  
+  .footer-right {
+    min-width: 95%;
+  }
+
+}
